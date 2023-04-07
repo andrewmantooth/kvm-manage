@@ -1,0 +1,16 @@
+---
+# defaults file for kvm-provision
+base_image_release: 37
+base_image_name: Fedora-Cloud-Base-37-1.7.x86_64.qcow2
+base_image_url: https://download.fedoraproject.org/pub/fedora/linux/releases/{{ base_image_release }}/Cloud/x86_64/images/{{ base_image_name }}
+base_image_sha: b5b9bec91eee65489a5745f6ee620573b23337cbb1eb4501ce200b157a01f3a0
+libvirt_pool_dir: "/var/lib/libvirt/images"
+vm_name: f37-dev
+vm_vcpus: 2
+vm_ram_mb: 2048
+vm_net: default
+vm_root_pass: test123
+cleanup_tmp: false
+base_cloud_user: fedora
+ssh_key: /root/.ssh/id_rsa.pub
+# https://access.cdn.redhat.com/content/origin/files/sha256/9b/9b5718977832213cf07dc17a9ba3ad171b21576840064ecf2c395fa7642412d2/rhel-8.7-x86_64-kvm.qcow2?user=94c2301a8487d7515e6f7cf795697381&_auth_=1680792342_dadea788d59e3cbb8b2104c111384044
