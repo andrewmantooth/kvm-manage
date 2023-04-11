@@ -13,4 +13,6 @@ vm_root_pass: test123
 cleanup_tmp: false
 base_cloud_user: fedora
 ssh_key: /root/.ssh/id_rsa.pub
+base_user: devops
+base_user_pass: test123
 # https://access.cdn.redhat.com/content/origin/files/sha256/9b/9b5718977832213cf07dc17a9ba3ad171b21576840064ecf2c395fa7642412d2/rhel-8.7-x86_64-kvm.qcow2?user=94c2301a8487d7515e6f7cf795697381&_auth_=1680792342_dadea788d59e3cbb8b2104c111384044

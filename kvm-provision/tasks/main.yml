@@ -1,7 +1,7 @@
 ---
 # tasks file for kvm-provision
 
-- name: Install needed rpms on host
+- name: Install needed rpms on host hypervisor
   ansible.builtin.dnf:
     name:
       - guestfs-tools
@@ -44,6 +44,9 @@
         --hostname {{ vm_name }} \
         --root-password password:{{ vm_root_pass }} \
         --ssh-inject 'root:file:{{ ssh_key }}' \
+        --run-command 'useradd {{ base_user }}' \
+        --password {{ base_user }}:password:{{ base_user_pass }} \
+        --ssh-inject '{{ base_user }}:file:{{ ssh_key }}' \
         --uninstall cloud-init \
         --selinux-relabel
       when: copy_results is changed
