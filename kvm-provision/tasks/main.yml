@@ -1,10 +1,6 @@
 ---
 # tasks file for kvm-provision
 
-- name: Download the kvm-provision role
-  ansible.builtin.import_playbook:
-    name: prep.yml
-
 - name: Install needed rpms on host hypervisor
   ansible.builtin.dnf:
     name:
