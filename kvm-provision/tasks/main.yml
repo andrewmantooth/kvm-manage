@@ -1,6 +1,10 @@
 ---
 # tasks file for kvm-provision
 
+- name: Download the kvm-provision role
+  ansible.builtin.import_playbook:
+    name: prep.yml
+
 - name: Install needed rpms on host hypervisor
   ansible.builtin.dnf:
     name:
@@ -38,15 +42,25 @@
         mode: 0660
       register: copy_results
 
+    # - name: Configure the image - devops included
+    #   ansible.builtin.command: |
+    #     virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
+    #     --hostname {{ vm_name }} \
+    #     --root-password password:{{ vm_root_pass }} \
+    #     --ssh-inject 'root:file:{{ ssh_key }}' \
+    #     --run-command 'useradd {{ base_user }}' \
+    #     --password {{ base_user }}:password:{{ base_user_pass }} \
+    #     --ssh-inject '{{ base_user }}:file:{{ ssh_key }}' \
+    #     --uninstall cloud-init \
+    #     --selinux-relabel
+    #   when: copy_results is changed
+
     - name: Configure the image
       ansible.builtin.command: |
         virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
         --hostname {{ vm_name }} \
         --root-password password:{{ vm_root_pass }} \
         --ssh-inject 'root:file:{{ ssh_key }}' \
-        --run-command 'useradd {{ base_user }}' \
-        --password {{ base_user }}:password:{{ base_user_pass }} \
-        --ssh-inject '{{ base_user }}:file:{{ ssh_key }}' \
         --uninstall cloud-init \
         --selinux-relabel
       when: copy_results is changed
