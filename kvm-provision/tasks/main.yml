@@ -78,13 +78,6 @@
   retries: 15
   delay: 2
 
-- name: Get info
-  community.libvirt.virt:
-    command: info
-    name: { { vm_name } }
-
-- name: Get Node info
-
 - name: Ensure temporary file is deleted
   ansible.builtin.file:
     path: "/tmp{{ base_image_name }}"
