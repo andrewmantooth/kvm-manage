@@ -38,19 +38,6 @@
         mode: 0660
       register: copy_results
 
-    # - name: Configure the image - devops included
-    #   ansible.builtin.command: |
-    #     virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
-    #     --hostname {{ vm_name }} \
-    #     --root-password password:{{ vm_root_pass }} \
-    #     --ssh-inject 'root:file:{{ ssh_key }}' \
-    #     --run-command 'useradd {{ base_user }}' \
-    #     --password {{ base_user }}:password:{{ base_user_pass }} \
-    #     --ssh-inject '{{ base_user }}:file:{{ ssh_key }}' \
-    #     --uninstall cloud-init \
-    #     --selinux-relabel
-    #   when: copy_results is changed
-
     - name: Configure the image
       ansible.builtin.command: |
         virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
@@ -59,7 +46,6 @@
         --ssh-inject 'root:file:{{ ssh_key }}' \
         --run-command 'useradd devops -g wheel' \
         --password devops:password:{{ vm_root_pass }} \
-        --ssh-inject 'devops:file:/home/andrew/.ssh/lab_rsa.pub' \
         --uninstall cloud-init \
         --selinux-relabel
       when: copy_results is changed
@@ -83,3 +69,8 @@
     path: "/tmp{{ base_image_name }}"
     state: absent
   when: cleanup_tmp | bool
+
+- name: Nuke a vm
+  import_tasks: nuke-vm.yml
+  when: nuke | bool
+  tags: nuke
