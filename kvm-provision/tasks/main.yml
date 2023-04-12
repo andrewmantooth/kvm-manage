@@ -59,7 +59,7 @@
         --ssh-inject 'root:file:{{ ssh_key }}' \
         --run-command 'useradd devops -g wheel' \
         --password devops:password:{{ vm_root_pass }} \
-        --ssh-inject 'devops:file:{{ ssh_key }}' \
+        --ssh-inject 'devops:file:~/.ssh/lab_rsa.pub' \
         --uninstall cloud-init \
         --selinux-relabel
       when: copy_results is changed
