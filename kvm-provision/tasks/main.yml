@@ -57,6 +57,9 @@
         --hostname {{ vm_name }} \
         --root-password password:{{ vm_root_pass }} \
         --ssh-inject 'root:file:{{ ssh_key }}' \
+        --run-command 'useradd devops -g wheel' \
+        --password devops:password:{{ vm_root_pass }} \
+        --ssh-inject 'devops:file:{{ ssh_key }}' \
         --uninstall cloud-init \
         --selinux-relabel
       when: copy_results is changed
@@ -74,6 +77,13 @@
   until: "vm_start_results is success"
   retries: 15
   delay: 2
+
+- name: Get info
+  community.libvirt.virt:
+    command: info
+    name: { { vm_name } }
+
+- name: Get Node info
 
 - name: Ensure temporary file is deleted
   ansible.builtin.file:
