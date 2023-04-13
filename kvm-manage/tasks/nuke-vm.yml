@@ -13,6 +13,6 @@
 
 - name: Delete the image file
   ansible.builtin.file:
-    file: "{{ libvirt_pool_dir }}/{{ vm.name }}.qcow2"
+    path: "{{ libvirt_pool_dir }}/{{ vm.name }}.qcow2"
     status: absent
   ignore_errors: true
