@@ -3,13 +3,16 @@
     command: list_vms
   register: existing_vms
   changed_when: false
+  become: true
 
 - name: Print list of existing vms
   ansible.builtin.debug:
     var: existing_vms
+  become: true
 
 - name: Create Fedora VM if it does not exist
   when: "vm.name not in existing_vms.list_vms"
+  become: true
   block:
     - name: Download base image
       ansible.builtin.get_url:
@@ -52,3 +55,4 @@
   until: "vm_start_results is success"
   retries: 15
   delay: 2
+  become: true
