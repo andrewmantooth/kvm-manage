@@ -8,10 +8,12 @@
       - python3-libvirt
       - virt-top
     state: present
+  become: true
 
 - name: Create fedora VM
   include_tasks: create-fedora.yml
   when: (vm.state |default('present', true)) == 'present'
+  become: true
 
 - name: Nuke a vm
   include_tasks: nuke-vm.yml
@@ -19,3 +21,4 @@
   loop_control:
     loop_var: vm
   when: (vm.state |default('present', true)) == 'absent'
+  become: true
