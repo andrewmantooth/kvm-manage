@@ -10,7 +10,7 @@
     state: present
   become: true
 
-- name: Create fedora VM
+- name: Create Fedora VM
   include_tasks: create-fedora.yml
   loop: "{{ vms|flatten(levels=1) }}"
   loop_control:

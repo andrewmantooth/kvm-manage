@@ -15,4 +15,3 @@
   ansible.builtin.file:
     path: "{{ libvirt_pool_dir }}/{{ vm.name }}.qcow2"
     state: absent
-  ignore_errors: true
