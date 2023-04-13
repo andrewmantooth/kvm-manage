@@ -14,11 +14,13 @@ fedora_image:
   name: Fedora-Cloud-Base-37-1.7.x86_64.qcow2
 
   # Url to retrieve the image from.
-  url: https://download.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_image.release }}/Cloud/x86_64/images/{{ fedora_image.name }}
+  # url: https://download.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_image.release }}/Cloud/x86_64/images/{{ fedora_image.name }}
 
   # Sha of the image so that it can be verified.
   sha: b5b9bec91eee65489a5745f6ee620573b23337cbb1eb4501ce200b157a01f3a0
 
+# Url to retrieve the image from.
+fedora_url: https://download.fedoraproject.org/pub/fedora/linux/releases/{{ fedora_image.release }}/Cloud/x86_64/images/{{ fedora_image.name }}
 # vm_name: f37-dev
 # vm_vcpus: 2
 # vm_ram_mb: 2048
