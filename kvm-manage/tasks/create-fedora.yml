@@ -16,7 +16,7 @@
   block:
     - name: Download base image
       ansible.builtin.get_url:
-        url: "{{ fedora_image.url }}"
+        url: "{{ fedora_url }}"
         dest: "/tmp/{{ fedora_image.name }}"
         checksum: "sha256:{{ fedora_image.sha }}"
         mode: 0660
