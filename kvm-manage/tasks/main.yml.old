@@ -1,0 +1,78 @@
+---
+# tasks file for kvm-provision
+
+- name: Install needed rpms on host hypervisor
+  ansible.builtin.dnf:
+    name:
+      - guestfs-tools
+      - python3-libvirt
+      - virt-top
+    state: present
+
+- name: Get VMs list
+  community.libvirt.virt:
+    command: list_vms
+  register: existing_vms
+  changed_when: false
+
+- name: Print list of existing vms
+  ansible.builtin.debug:
+    var: existing_vms
+
+- name: Create Fedora VM if it does not exist
+  when: "vm_name not in existing_vms.list_vms"
+  block:
+    - name: Download base image
+      ansible.builtin.get_url:
+        url: "{{ base_image_url }}"
+        dest: "/tmp/{{ base_image_name }}"
+        checksum: "sha256:{{ base_image_sha }}"
+        mode: 0660
+
+    - name: Copy base image to libvirt directory
+      ansible.builtin.copy:
+        dest: "{{ libvirt_pool_dir }}/{{ vm_name }}.qcow2"
+        src: "/tmp/{{ base_image_name }}"
+        remote_src: true
+        force: false
+        mode: 0660
+      register: copy_results
+
+    - name: Configure the image
+      ansible.builtin.command: |
+        virt-customize -a {{ libvirt_pool_dir }}/{{ vm_name }}.qcow2 \
+        --hostname {{ vm_name }} \
+        --root-password password:{{ vm_root_pass }} \
+        --ssh-inject 'root:file:{{ ssh_key }}' \
+        --run-command 'useradd devops -g wheel' \
+        --password devops:password:{{ vm_root_pass }} \
+        --uninstall cloud-init \
+        --selinux-relabel
+      when: copy_results is changed
+
+    - name: Define vm
+      community.libvirt.virt:
+        command: define
+        xml: "{{ lookup('ansible.builtin.template', 'vm-template.xml.j2') }}"
+
+- name: Ensure VM is started
+  community.libvirt.virt:
+    name: "{{ vm_name }}"
+    state: running
+  register: vm_start_results
+  until: "vm_start_results is success"
+  retries: 15
+  delay: 2
+
+# - name: Ensure temporary file is deleted
+#   ansible.builtin.file:
+#     path: "/tmp{{ base_image_name }}"
+#     state: absent
+#   when: cleanup_tmp | bool
+
+- name: Nuke a vm
+  include_tasks: nuke-vm.yml
+  loop: "{{ vms|flatten(levels=1) }}"
+  loop_control:
+    loop_var: vm
+  when: (vm.state |default('present', true)) == 'absent'
