@@ -12,6 +12,7 @@
 
 - name: Create fedora VM
   include_tasks: create-fedora.yml
+  loop: "{{ vms|flatten(levels=1) }}"
   when: (vm.state |default('present', true)) == 'present'
 
 - name: Nuke a vm
