@@ -71,6 +71,8 @@
   when: cleanup_tmp | bool
 
 - name: Nuke a vm
-  import_tasks: nuke-vm.yml
-  when: nuke | bool
-  tags: nuke
+  include_tasks: nuke-vm.yml
+  loop: "{{ vms|flatten(levels=1) }}"
+  loop_control:
+    loop_var: vm
+  when: (vm.state |default('present', true)) == 'absent'
