@@ -34,10 +34,10 @@
       ansible.builtin.command: |
         virt-customize -a {{ libvirt_pool_dir }}/{{ vm.name }}.qcow2 \
         --hostname {{ vm.name }} \
-        --root-password password:{{ vm.root_passwd }} \
+        --root-password password:{{ vm.root_pass }} \
         --ssh-inject 'root:file:{{ vm.root_ssh_key }}' \
         --run-command 'useradd devops -g wheel' \
-        --password devops:password:{{ vm.super_user_passwd }} \
+        --password devops:password:{{ vm.super_user_pass }} \
         --uninstall cloud-init \
         --selinux-relabel
       when: copy_results is changed

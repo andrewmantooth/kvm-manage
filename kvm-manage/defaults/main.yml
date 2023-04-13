@@ -37,7 +37,7 @@ vms:
     os: fedora
 
     # Password for root
-    root_passwd: badpass
+    root_pass: badpass
 
     # SSH key for super root
     root_ssh_key: "/root/.ssh/id_rsa.pub"
@@ -46,7 +46,7 @@ vms:
     super_user: devops
 
     # Passwword for super user
-    super_user_passwd: badpass
+    super_user_pass: badpass
 
     # SSH for super user
     super_user_ssh_key: "/root/.ssh/id_rsa.pub"
