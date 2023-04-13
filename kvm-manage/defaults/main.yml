@@ -41,7 +41,7 @@ vms:
     name: test-vm
 
     # Memory in MB.
-    memory_mb: 2048
+    ram_mb: 2048
 
     # Number of CPUs
     cpus: 2
