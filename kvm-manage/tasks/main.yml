@@ -13,7 +13,7 @@
 - name: Create Fedora VM
   include_tasks: create-fedora.yml
   vars:
-    ram_mb: "{{ vm.ramb }}"
+    ram_mb: "{{ vm.ram_mb }}"
     cpus: "{{ vm.cpus }}"
     net: "{{ vm.net }}"
     os: "{{ vm.os }}"
