@@ -10,9 +10,9 @@
     state: present
   become: true
 
-- name: Spit out a var for testing
-  ansible.builtin.debug:
-    msg: "{{ vm.root_pass }}"
+# - name: Spit out a var for testing
+#   ansible.builtin.debug:
+#     msg: "{{ vm.root_pass }}"
 
 - name: Create Fedora VM
   include_tasks: create-fedora.yml
