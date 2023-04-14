@@ -22,7 +22,8 @@
     super_user: "{{ vm.super_user }}"
     super_user_pass: "{{ vm.super_user_pass}}"
     super_user_ssh_key: "{{ vm.super_user_ssh_key }}"
-  loop: "{{ vms|flatten(levels=1) }}"
+  # loop: "{{ vms|flatten(levels=1) }}"
+  with_items: "{{ vms }}"
   loop_control:
     loop_var: vm
   when: (vm.state |default('present', true)) == 'present'
