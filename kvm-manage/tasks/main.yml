@@ -10,14 +10,18 @@
     state: present
   become: true
 
-# - name: Spit out a var for testing
-#   ansible.builtin.debug:
-#     msg: "{{ vm.root_pass }}"
-
 - name: Create Fedora VM
   include_tasks: create-fedora.yml
   vars:
+    ram_mb: "{{ vm.ramb }}"
+    cpus: "{{ vm.cpus }}"
+    net: "{{ vm.net }}"
+    os: "{{ vm.os }}"
     root_pass: "{{ vm.root_pass }}"
+    root_ssh_key: "{{ vm.root_ssh_key }}"
+    super_user: "{{ vm.super_user }}"
+    super_user_pass: "{{ vm.super_user_pass}}"
+    super_user_ssh_key: "{{ vm.super_user_ssh_key }}"
   loop: "{{ vms|flatten(levels=1) }}"
   loop_control:
     loop_var: vm
