@@ -1,38 +1,51 @@
-Role Name
-=========
+# Role Name
 
-A brief description of the role goes here.
+- This role will manage vms provided by kvm, including the creation, configuration, and deletion of vms.
+- The intent is to require as few vars be set as possible, with the option to customize the role.
+  - The default passwords and settings of the image are bad and should be addressed in a follow on 'baseline' ansible role./
+- The role will be modular and enable it to be used to make 1-many vms depending on the project, 'studying AAP, Fedora test machine for a new release, etc'
 
-Requirements
-------------
+## Requirements
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- Machine needs to be capable of being a hypervisor and have libvirt/kvm installed. This can be automated/detected in the future but now the assumption is that it's running on a default Fedora workstation which has the bulk of the deps installed by default.
 
-Role Variables
---------------
+## Role Variables
 
 A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
 
-Dependencies
-------------
+## Dependencies
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+- None yet
 
-Example Playbook
-----------------
+## Example Playbook
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Example playbook creating a VM named 'aap-test' with the default mem, cpu settings
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+- name: Build AAP lab
+  hosts: localhost
+  connection: local
+  roles:
+  - role: kvm-manage
+    vms:
+    - state: present
+      name: aap-test
 
-License
--------
+Example playbook deleting a VM named 'aap-test'.
+
+- name: Shutdown and delete aap-test
+  hosts: localhost
+  connection: local
+  become: true
+  roles:
+  - role: kvm-manage
+    vms:
+    - state: absent
+      name: "aap-test"
+
+## License
 
 BSD
 
-Author Information
-------------------
+## Author Information
 
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+Andrew is an aging millenial
