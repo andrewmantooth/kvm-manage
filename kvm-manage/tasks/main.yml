@@ -16,8 +16,9 @@
 
 - name: Create Fedora VM
   include_tasks: create-fedora.yml
-  # loop: "{{ vms|flatten(levels=1) }}"
-  with_items: "{{ vms }}"
+  vars:
+    root_pass: "{{ vm.root_pass }}"
+  loop: "{{ vms|flatten(levels=1) }}"
   loop_control:
     loop_var: vm
   when: (vm.state |default('present', true)) == 'present'
