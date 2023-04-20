@@ -13,11 +13,11 @@
 - name: Create Fedora VM
   include_tasks: create-fedora.yml
   vars:
-    ram_mb: "{{ vm.ram_mb }}"
+    ram_mb: "{{ vm.ram_mb |default }}"
     cpus: "{{ vm.cpus }}"
     net: "{{ vm.net }}"
     os: "{{ vm.os }}"
-    root_pass: "{{ vm.root_pass }}"
+    root_pass: "{{ vm.root_pass | default}}"
     root_ssh_key: "{{ vm.root_ssh_key }}"
     super_user: "{{ vm.super_user }}"
     super_user_pass: "{{ vm.super_user_pass}}"
